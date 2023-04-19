@@ -61,3 +61,20 @@ docker exec <container_name_or_id> ps aux
 这将在容器中运行 ps 命令，并显示容器中的所有进程。
 
 ```
+
+
+### 如果系统内有多个docker容器进程，那么通过ps命令会看到什么
+
+```
+在宿主机上使用 ps 命令可以查看系统上所有进程的信息，包括所有正在运行的 Docker 容器进程。但是，由于容器技术使用命名空间和进程空间来隔离容器中的进程和宿主机上的进程，因此在 ps 命令的输出中，您将看到每个正在运行的 Docker 容器进程的 PID、COMMAND 和其他信息。
+
+在 ps 命令的输出中，每个 Docker 容器进程都会以其命令行的形式显示。通常情况下，这些命令行都包含有关容器映像的信息，例如容器的名称、映像 ID、容器 ID 等。例如：
+
+1234 ?        Sl     0:00 /usr/bin/dockerd --foreground --config-file=/etc/docker/daemon.json
+5678 ?        Ssl    0:00 containerd --config /var/run/docker/containerd/containerd.toml --log-level info
+9012 ?        Sl     0:00 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 8080 -container-ip 172.17.0.2 -container-port 80
+
+在这个示例中，您可以看到三个不同的 Docker 容器进程，其中一个是 Docker 守护进程，一个是 containerd 进程，另一个是 Docker 代理进程。这些进程的 PID 和其他信息也可以在 ps 命令的输出中看到。
+
+总之，使用 ps 命令可以在宿主机上查看所有进程的信息，包括正在运行的 Docker 容器进程的信息。如果您只想查看 Docker 容器进程的信息，请使用 docker ps 命令。
+```
